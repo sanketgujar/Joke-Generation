@@ -31,11 +31,14 @@ def hidden_state_initializer(sent,hidden_state_size = 300):
     call : hidden_state_initializer("Hello how are you")
     """
     nouns = [token for token, pos in pos_tag(word_tokenize(sent)) if pos.startswith('N')]
-    e_ = np.zeros(hidden_state_size)
+    e_ = np.zeros((1,hidden_state_size))
     for i in range(len(nouns)):
         e_ += emb_model[nouns[i]]
-    return (e_ / len(e))
+    return (e_ / len(e_))
 
+
+def get_word(embedded_vec):
+	return np.array(emb_model.most_similar(embedded_vec.reshape(1,300)))
 
 def get_word_embedding(word):
     """
