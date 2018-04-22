@@ -34,7 +34,7 @@ def hidden_state_initializer(sent,hidden_state_size = 300):
     e_ = np.zeros(hidden_state_size)
     for i in range(len(nouns)):
         e_ += emb_model[nouns[i]]
-    return e_
+    return (e_ / len(e))
 
 
 def get_word_embedding(word):
