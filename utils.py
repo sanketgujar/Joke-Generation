@@ -7,6 +7,9 @@ import os
 import pip
 import pandas as pd
 
+max_len = 20
+word_shape = (300)
+
 #importing the trained embedding model
 try:
     emb_model = gensim.models.Word2Vec.load('joke_embedding')
@@ -46,7 +49,10 @@ def get_word_embedding(word):
     output : word embedding
     """
     try:
-        return emb_model[word]
+        try:
+            return emb_model[word]
+        except KeyError:
+            return np.zeros(word_shape)
     except NameError:
         return em[str(word)]
 
@@ -63,10 +69,9 @@ df = pd.read_csv('/home/sanket/WPI_Spring18/DL/project/data/shortjokes.csv')
 x  = df['Joke'].values.tolist()
 print ('Jokes file is loaded')
 
-max_len = 20
-word_shape = get_word_embedding('Hi').shape
 
 
+# print (get_word_embedding('stop.'))
 print ('starting to generate jokes embedding, this will take a while')
 jokes_embedded = []
 for i in range(len(x)):
