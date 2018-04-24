@@ -7,9 +7,6 @@ import os
 import pip
 import pandas as pd
 
-
-
-
 #importing the trained embedding model
 try:
     emb_model = gensim.models.Word2Vec.load('joke_embedding')
@@ -25,10 +22,6 @@ except FileNotFoundError:
     filename = wget.download('https://github.com/sanketgujar/Joke-Generation/blob/master/joke_embedding')
     emb_model = gensim.models.Word2Vec.load('joke_embedding')
 
-
-df = pd.read_csv('data/shortjokes.csv')
-x  = df['Joke'].values.tolist()
-print ('Jokes generated')
 
 
 def hidden_state_initializer(sent,hidden_state_size = 300):
@@ -66,11 +59,19 @@ def get_sent_embedding(sent):
         sent_vec.append(np.zeros(word_shape))
     return np.array(sent_vec[:20])
 
+df = pd.read_csv('/home/sanket/WPI_Spring18/DL/project/data/shortjokes.csv')
+x  = df['Joke'].values.tolist()
+print ('Jokes file is loaded')
 
+max_len = 20
+word_shape = get_word_embedding('Hi').shape
+
+
+print ('starting to generate jokes embedding, this will take a while')
 jokes_embedded = []
 for i in range(len(x)):
     jokes_embedded.append(np.concatenate([get_sent_embedding(x[i]), 
-                                          x_hidden_state_initializer(x[i])],
+                                          hidden_state_initializer(x[i])],
                                           axis = 0))
 
-print ('jokes generated in joke_embedded')
+print ('***jokes generated** Access from joke_embedded list ')
