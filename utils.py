@@ -33,7 +33,7 @@ def hidden_state_initializer(sent,hidden_state_size = 300):
     output: embedded hidden state (averged noun embedding in the sentence)
     call : hidden_state_initializer("Hello how are you")
     """
-    nouns = [token for token, pos in pos_tag(word_tokenize(sent)) if pos.startswith('N')]
+    nouns = [token for token, pos in pos_tag(sent.split(' ')) if pos.startswith('N')]
     e_ = np.zeros((1,hidden_state_size))
     for i in range(len(nouns)):
         e_ += emb_model[nouns[i]]
@@ -57,8 +57,11 @@ def get_word_embedding(word):
         return em[str(word)]
 
 def get_sent_embedding(sent):
+    sent = str(sent)
     sent_vec = []
-    tokens  = word_tokenize(sent)
+    # word_count += len(seq.split(' '))
+    tokens = (sent.split(' '))
+    
     for i in range(len(tokens)):
         sent_vec.append(get_word_embedding(tokens[i])[:300])
     while (len(sent_vec) < max_len):
